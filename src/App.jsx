@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react'
 import './App.css'
-import axios from 'axios'
-import ShowDetails from './Componentes/showDetails';
+import axios from 'axios'    
+import {Chart} from "react-google-charts";
 
 function App() {
 
@@ -9,12 +9,21 @@ function App() {
   const [coin,setCoin] = useState({});
   const [optionCoin, setOptionCoin] = useState({});
 
+  const data = [
+    ["date", "Preço de compra","bla"],
+    ["2013", 0, 0],
+    ["2014", 0, 0],
+    ["2015", 0, 0],
+    ["2016", 0, 0],
+  ]
+
+
   const apiSearchPriceCoin = async () =>{
 
     const res = await axios.get(`https://www.mercadobitcoin.net/api/${coin}/ticker/`);
     if(res!=null){
       setDados(res.data);
-      
+
       console.table(dados);
     }else{
       console.log("problema ao receber objeto da API mercadoBitcoin");
@@ -52,8 +61,12 @@ function App() {
             ))}
         </select>
         <button onClick={apiSearchPriceCoin}>procurar</button>
-        { dados.ticker && 
-        <ShowDetails dados={dados}></ShowDetails>}
+        
+        <Chart
+          chartType='Line'
+          width="100%"
+          height="400px"
+          data={data}></Chart>
         
       </section>
     </main>
